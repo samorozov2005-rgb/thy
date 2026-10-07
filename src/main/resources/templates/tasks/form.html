@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${taskId == null ? 'Новая задача' : 'Редактирование задачи'} + ' — Task Manager'">Форма</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+<main class="container page narrow">
+    <section class="card">
+        <p class="eyebrow" th:text="${taskId == null ? 'Создание' : 'Редактирование'}">Создание</p>
+        <h1 th:text="${taskId == null ? 'Новая задача' : 'Изменить задачу #' + taskId}">Новая задача</h1>
+
+        <form class="task-form" th:object="${taskRequest}"
+              th:action="${taskId == null} ? @{/web/tasks} : @{/web/tasks/{id}(id=${taskId})}" method="post">
+            <div class="field">
+                <label for="title">Название</label>
+                <input id="title" type="text" th:field="*{title}" maxlength="100" autofocus>
+                <span class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Ошибка</span>
+            </div>
+
+            <div class="field">
+                <label for="description">Описание</label>
+                <textarea id="description" th:field="*{description}" rows="6" maxlength="1000"></textarea>
+                <span class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Ошибка</span>
+            </div>
+
+            <div class="form-grid">
+                <div class="field">
+                    <label for="priority">Приоритет</label>
+                    <select id="priority" th:field="*{priority}">
+                        <option th:each="item : ${priorities}" th:value="${item}" th:text="${item}"></option>
+                    </select>
+                    <span class="field-error" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}">Ошибка</span>
+                </div>
+                <div class="field">
+                    <label for="status">Статус</label>
+                    <select id="status" th:field="*{status}">
+                        <option th:each="item : ${statuses}" th:value="${item}" th:text="${item}"></option>
+                    </select>
+                    <span class="field-error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Ошибка</span>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="button button-primary" type="submit"
+                        th:text="${taskId == null ? 'Создать' : 'Сохранить'}">Сохранить</button>
+                <a class="button" th:href="@{/web/tasks}">Отмена</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

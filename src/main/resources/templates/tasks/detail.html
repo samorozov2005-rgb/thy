@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${task.title} + ' — Task Manager'">Задача</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+<main class="container page narrow">
+    <article class="card detail-card">
+        <p class="eyebrow">Задача #<span th:text="${task.id}">1</span></p>
+        <h1 th:text="${task.title}">Название</h1>
+        <dl class="details">
+            <dt>ID</dt><dd th:text="${task.id}">1</dd>
+            <dt>Описание</dt><dd th:text="${#strings.isEmpty(task.description) ? 'Описание не задано' : task.description}">Описание</dd>
+            <dt>Приоритет</dt><dd th:text="${task.priority}">HIGH</dd>
+            <dt>Статус</dt><dd th:text="${task.status}">TODO</dd>
+        </dl>
+        <div class="actions">
+            <a class="button" th:href="@{/web/tasks}">← Назад к списку</a>
+            <a class="button button-primary" sec:authorize="hasAnyRole('USER','ADMIN')"
+               th:href="@{/web/tasks/{id}/edit(id=${task.id})}">Редактировать</a>
+        </div>
+    </article>
+</main>
+</body>
+</html>

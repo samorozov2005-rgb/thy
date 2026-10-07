@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Вход — Task Manager</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="login-page">
+<main class="login-card">
+    <p class="eyebrow">Spring Security</p>
+    <h1>Task Manager</h1>
+    <p class="muted">Войдите, чтобы управлять задачами</p>
+    <div class="alert alert-error" th:if="${param.error}">Неверный логин или пароль</div>
+    <div class="alert alert-success" th:if="${param.logout}">Вы успешно вышли</div>
+    <form class="task-form" action="/login" th:action="@{/login}" method="post">
+        <div class="field">
+            <label for="username">Логин</label>
+            <input id="username" name="username" type="text" autocomplete="username" required autofocus>
+        </div>
+        <div class="field">
+            <label for="password">Пароль</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="button button-primary button-full" type="submit">Войти</button>
+    </form>
+    <p class="login-hint">USER: user / user123<br>ADMIN: admin / admin123</p>
+</main>
+</body>
+</html>

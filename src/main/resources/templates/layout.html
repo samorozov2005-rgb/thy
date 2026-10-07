@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Manager</title>
+</head>
+<body>
+<nav class="navbar" th:fragment="navbar">
+    <div class="container navbar-content">
+        <a class="brand" th:href="@{/web/tasks}">Task Manager</a>
+        <a class="nav-link" th:href="@{/web/tasks}">Список задач</a>
+        <div class="nav-user">
+            <span>Пользователь: <strong sec:authentication="name">username</strong></span>
+            <form th:action="@{/logout}" method="post">
+                <button class="button button-light" type="submit">Выйти</button>
+            </form>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

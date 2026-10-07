@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Задачи — Task Manager</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+<main class="container page">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Рабочее пространство</p>
+            <h1>Задачи</h1>
+        </div>
+        <a class="button button-primary" th:href="@{/web/tasks/new}">+ Создать задачу</a>
+    </div>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(tasks)}">Задач пока нет</div>
+
+    <div class="table-wrap" th:unless="${#lists.isEmpty(tasks)}">
+        <table class="task-table">
+            <thead><tr><th>ID</th><th>Название</th><th>Приоритет</th><th>Статус</th><th>Действия</th></tr></thead>
+            <tbody>
+            <tr th:each="task : ${tasks}">
+                <td th:text="${task.id}">1</td>
+                <td class="task-title" th:text="${task.title}">Название</td>
+                <td><span class="badge" th:classappend="${' priority-' + #strings.toLowerCase(task.priority.name())}"
+                          th:text="${task.priority}">HIGH</span></td>
+                <td><span class="badge status" th:text="${task.status}">TODO</span></td>
+                <td class="actions">
+                    <a class="button button-small" th:href="@{/web/tasks/{id}(id=${task.id})}">Подробнее</a>
+                    <a class="button button-small" sec:authorize="hasAnyRole('USER','ADMIN')"
+                       th:href="@{/web/tasks/{id}/edit(id=${task.id})}">Редактировать</a>
+                    <form sec:authorize="hasRole('ADMIN')" th:action="@{/web/tasks/{id}/delete(id=${task.id})}" method="post">
+                        <button class="button button-small button-danger" type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
